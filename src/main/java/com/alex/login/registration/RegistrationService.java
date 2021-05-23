@@ -3,10 +3,11 @@ package com.alex.login.registration;
 import com.alex.login.appuser.AppUser;
 import com.alex.login.appuser.AppUserRole;
 import com.alex.login.appuser.AppUserService;
-import com.alex.login.client.Client;
-import com.alex.login.client.ClientService;
+import com.alex.login.client.*;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.Iterator;
 
 @Service
 @AllArgsConstructor
@@ -50,8 +51,25 @@ public class RegistrationService {
             throw new IllegalStateException(String.format("%s is not a valid email",request.getEmailList()));
         }
         System.out.println(request);
-        System.out.println(request.getName().isEmpty());
-        System.out.println(request.getCpf().isEmpty());
+        Iterator<ClientAddresses> addressIterator = request.getAddressList().iterator();
+        while (addressIterator.hasNext()) {
+            ClientAddresses clientAddresses = addressIterator.next();
+            System.out.println(clientAddresses.getCep());
+            System.out.println(clientAddresses.getLog());
+            System.out.println(clientAddresses.getBar());
+            System.out.println(clientAddresses.getUf());
+            System.out.println(clientAddresses.getComplement());
+        }
+        Iterator<ClientEmails> clientEmailsIterator = request.getEmailList().iterator();
+        while (clientEmailsIterator.hasNext()) {
+            ClientEmails clientEmails = clientEmailsIterator.next();
+            System.out.println(clientEmails.getEmail());
+        }
+        Iterator<ClientPhones> clientPhonesIterator = request.getPhoneList().iterator();
+        while (clientPhonesIterator.hasNext()) {
+            ClientPhones clientPhones = clientPhonesIterator.next();
+            System.out.println(clientPhones.getPhone());
+        }
 //        System.out.println(request.getAddressList().size());
 //        System.out.println(request.getEmailList().size());
 //        System.out.println(request.getPhoneList().size());

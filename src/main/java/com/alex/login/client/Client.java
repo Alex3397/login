@@ -8,6 +8,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -32,17 +33,17 @@ public class Client {
     @ElementCollection
     @CollectionTable(name = "client_address", joinColumns = @JoinColumn(name = "client_id"))
     @Column(name = "address")
-    private List<ClientAddresses> addressList;
+    private List<ClientAddresses> addressList = new ArrayList<>();
 
     @ElementCollection
     @CollectionTable(name = "client_emails", joinColumns = @JoinColumn(name = "client_id"))
     @Column(name = "address")
-    private List<ClientEmails> emailList;
+    private List<ClientEmails> emailList = new ArrayList<>();
 
     @ElementCollection
     @CollectionTable(name = "client_phone_numbers", joinColumns = @JoinColumn(name = "client_id"))
     @Column(name = "address")
-    private List<ClientPhones> phoneList;
+    private List<ClientPhones> phoneList = new ArrayList<>();
 
     public Client(String name,
                   String cpf,
