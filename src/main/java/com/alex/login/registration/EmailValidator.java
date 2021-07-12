@@ -1,6 +1,6 @@
 package com.alex.login.registration;
 
-import com.alex.login.client.ClientEmails;
+import com.alex.login.users.client.ClientEmails;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

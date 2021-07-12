@@ -1,14 +1,13 @@
 package com.alex.login.registration;
 
-import com.alex.login.client.ClientAddresses;
-import com.alex.login.client.ClientEmails;
-import com.alex.login.client.ClientPhones;
+import com.alex.login.users.client.ClientAddresses;
+import com.alex.login.users.client.ClientEmails;
+import com.alex.login.users.client.ClientPhones;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Getter

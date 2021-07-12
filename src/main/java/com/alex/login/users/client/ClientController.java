@@ -1,4 +1,4 @@
-package com.alex.login.client;
+package com.alex.login.users.client;
 
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;

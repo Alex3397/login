@@ -1,4 +1,4 @@
-package com.alex.login.appuser;
+package com.alex.login.users.appuser;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -28,7 +28,7 @@ public class AppUser implements UserDetails {
     @Enumerated(EnumType.STRING)
     private AppUserRole appUserRole;
     private Boolean locked = false;
-    private Boolean enabled = true;
+    private Boolean enabled = false;
 
     public AppUser(String email,
                    String username,

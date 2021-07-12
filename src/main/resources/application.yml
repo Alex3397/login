@@ -5,12 +5,12 @@ server:
 
 spring:
   datasource:
-    password: ${DATABASE_USER}
+    password: ${DATABASE_PASS}
     url: ${DATABASE_URL}
-    username: ${DATABASE_PASS}
+    username: ${DATABASE_USER}
   jpa:
     hibernate:
-      ddl-auto: none
+      ddl-auto: create-drop
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
@@ -18,10 +18,10 @@ spring:
     show-sql: true
 
   mail:
-    host: localhost
-    port: 1025
-    username: hello
-    password: hello
+    host: smtp.gmail.com
+    port: 587
+    username: ${SMTP_USER}
+    password: ${SMTP_PASS}
 
     properties:
       mail:

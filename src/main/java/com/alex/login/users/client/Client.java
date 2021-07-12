@@ -1,4 +1,4 @@
-package com.alex.login.client;
+package com.alex.login.users.client;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
