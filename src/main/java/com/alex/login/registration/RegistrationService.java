@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
+import java.net.InetAddress;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
@@ -50,7 +51,7 @@ public class RegistrationService {
             } else if (confirmationToken.getAppUser().getAppUserRole() == AppUserRole.ADMIN) {
                 link = link + "admin" + "/confirm?token=" + newToken;
             }
-            emailSender.send(confirmationToken.getAppUser().getEmail(), buildConfirmationEmail(confirmationToken.getAppUser().getUsername(),link));
+            emailSender.send(confirmationToken.getAppUser().getEmail(), buildRevalidationEmail(confirmationToken.getAppUser().getUsername(),link));
             return "token expired, new token is: " + newToken;
         } else if (confirmationToken.getAppUser().isEnabled()) {
             throw new IllegalStateException("account has been enabled");
@@ -128,15 +129,39 @@ public class RegistrationService {
     }
 
     private String buildConfirmationEmail(String name, String link) {
-        Path file = Path.of("/run/media/theadsfactory/Seagate Expansion Drive/Dev/login/front-end/src/emails/Confirm Email/confirmemail.html");
+        Path file = Path.of(System.getProperty("user.dir"),"/front-end/src/emails/Confirm Email/confirmEmail.html");
+        String imagePath = "https://d1oco4z2z1fhwp.cloudfront.net/templates/default/3971";
         String rawContent = "";
         try {
             rawContent = Files.readString(file);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        String content = rawContent.replace("${USER}",name).replace("${LINK}",link);
-        return content;
+        return rawContent.replace("${USER}",name.toUpperCase()).replace("${LINK}",link).replace("${IMAGELINK}",imagePath);
+    }
+
+    private String buildRevalidationEmail(String name, String link) {
+        Path file = Path.of(System.getProperty("user.dir"),"/front-end/src/emails/Revalidate Token/revalidateToken.html");
+        String imagePath = "https://d1oco4z2z1fhwp.cloudfront.net/templates/default/3986";
+        String rawContent = "";
+        try {
+            rawContent = Files.readString(file);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return rawContent.replace("${USER}",name.toUpperCase()).replace("${LINK}",link).replace("${IMAGELINK}",imagePath);
+    }
+
+    private String buildResetPasswordEmail(String name, String link) {
+        Path file = Path.of(System.getProperty("user.dir"),"/front-end/src/emails/Reset Password/resetPassword.html");
+        String imagePath = "https://d1oco4z2z1fhwp.cloudfront.net/templates/default/4056";
+        String rawContent = "";
+        try {
+            rawContent = Files.readString(file);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return rawContent.replace("${USER}",name.toUpperCase()).replace("${LINK}",link).replace("${IMAGELINK}",imagePath);
     }
 
 }

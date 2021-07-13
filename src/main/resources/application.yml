@@ -8,6 +8,7 @@ spring:
     password: ${DATABASE_PASS}
     url: ${DATABASE_URL}
     username: ${DATABASE_USER}
+
   jpa:
     hibernate:
       ddl-auto: create-drop
@@ -34,3 +35,4 @@ spring:
           connectiontimeout: 5000
           timeout: 3000
           writetimeout: 5000
+

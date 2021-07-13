@@ -74,7 +74,7 @@ public class AppUserService implements UserDetailsService {
         ConfirmationToken ConfirmationToken = new ConfirmationToken(
                 token,
                 LocalDateTime.now(),
-                LocalDateTime.now().minusMinutes(25),
+                LocalDateTime.now().plusMinutes(25),
                 appUser
         );
         confirmationTokenService.saveConfirmationToken(ConfirmationToken);
