@@ -3,7 +3,6 @@ package com.alex.login.users.appuser;
 import com.alex.login.registration.token.ConfirmationToken;
 import com.alex.login.registration.token.ConfirmationTokenService;
 import lombok.AllArgsConstructor;
-import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -21,17 +20,18 @@ public class AppUserService implements UserDetailsService {
     private final static String USER_NOT_FOUND_MSG = "user %s not found";
     private final AppUserRepository appUserRepository;
     private final ConfirmationTokenService confirmationTokenService;
-
-    @Bean
-    public BCryptPasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+    private final BCryptPasswordEncoder passwordEncoder;
 
     @Override
     public UserDetails loadUserByUsername(String username)
             throws UsernameNotFoundException {
-        return appUserRepository.findByUsername(username).orElseThrow(() ->
-                new UsernameNotFoundException(String.format(USER_NOT_FOUND_MSG,username)));
+        if (appUserRepository.findByUsername(username).isPresent()){
+            return appUserRepository.findByUsername(username).orElseThrow(() ->
+                    new UsernameNotFoundException(String.format(USER_NOT_FOUND_MSG,username)));
+        } else if (appUserRepository.findByEmail(username).isPresent()) {
+            return appUserRepository.findByEmail(username).orElseThrow(() ->
+                    new UsernameNotFoundException(String.format(USER_NOT_FOUND_MSG,username)));
+        } else throw new UsernameNotFoundException(String.format(USER_NOT_FOUND_MSG,username));
     }
 
     public String signUpUser(AppUser appUser) {
@@ -62,7 +62,7 @@ public class AppUserService implements UserDetailsService {
         if (userExists) {throw new IllegalStateException("username is already in use");}
         if (emailIsTaken) {throw new IllegalStateException("email is already taken");}
 
-        String encodedPassword = passwordEncoder().encode(appUser.getPassword());
+        String encodedPassword = passwordEncoder.encode(appUser.getPassword());
         appUser.setPassword(encodedPassword);
         appUserRepository.save(appUser);
 

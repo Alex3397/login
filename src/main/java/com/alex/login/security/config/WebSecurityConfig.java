@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Configuration
 @AllArgsConstructor
@@ -16,6 +17,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final AppUserService appUserService;
+    private final BCryptPasswordEncoder passwordEncoder;
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -24,7 +26,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public DaoAuthenticationProvider daoAuthenticationProvider() {
-        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+        DaoAuthenticationProvider provider =
+                new DaoAuthenticationProvider();
+        provider.setPasswordEncoder(passwordEncoder);
         provider.setUserDetailsService(appUserService);
         return provider;
     }
@@ -35,7 +39,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .csrf()
             .disable()
             .authorizeRequests()
-                .antMatchers("/api/v*/registration/**")
+                .antMatchers("/")
+                .permitAll()
+                .antMatchers("/join")
+                .permitAll()
+                .antMatchers("/css/**")
+                .permitAll()
+                .antMatchers("/js/**")
                 .permitAll()
                 .antMatchers("/api/v*/**")
                 .permitAll()
@@ -45,6 +55,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .authenticated()
             .and()
             .formLogin()
+                .loginPage("/login")
+                .defaultSuccessUrl("/success",true)
+                .permitAll()
         ;
     }
 }
